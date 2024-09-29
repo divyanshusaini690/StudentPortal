@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Login Form -->
+        <div class="card login-size">
+            <div class="login-form">
+                <img src="images/logo.png" alt="Logo">
+                <h2>Student Login</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <a href="#" class="forgot-password">Forget password</a>
+                <button class="btn btn-login" onclick="login()">Login</button>
+                <p class="toggle-text">Don't have an account? <a href="#" class="toggle">Register</a></p>
+            </div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div class="registration-form">
+            <img src="images/logo.png" alt="Logo">
+            <h2>Student Registration</h2>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="firstName" placeholder="First Name" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="lastName" placeholder="Last Name" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button class="btn" onclick="register()">Register</button>
+            <p class="toggle-text">Already have an account? <a href="#" class="toggle">Login</a></p>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                document.querySelector('.wrapper').classList.toggle('flip');
+            });
+        });
+
+        async function login() {
+            const email = document.querySelector('.login-form input[name="email"]').value;
+            const password = document.querySelector('.login-form input[name="password"]').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: email, password: password }),
+            });
+
+            const result = await response.text();
+
+            if (response.ok) {
+                // Successful login, redirect to the homepage
+                window.location.href = 'home.html'; // Change this to your homepage URL
+            } else {
+                alert(result); // Show error message
+            }
+        }
+
+        async function register() {
+            const firstName = document.querySelector('.registration-form input[name="firstName"]').value;
+            const lastName = document.querySelector('.registration-form input[name="lastName"]').value;
+            const email = document.querySelector('.registration-form input[name="email"]').value;
+            const password = document.querySelector('.registration-form input[name="password"]').value;
+
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: email, password: password }),
+            });
+
+            const result = await response.text();
+            alert(result);
+        }
+    </script>
+</body>
+</html>
